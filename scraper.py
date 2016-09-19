@@ -62,7 +62,10 @@ def make_text_from_posts(board = 'b', save_to_txt = True):
             txt_file.write(text)
         print('Successfully saved bullshit to: %s\n' % filename)
 
+    return text
+
 # ============================================================
+# kinda test
 
 from pymarkovchain import MarkovChain
 
