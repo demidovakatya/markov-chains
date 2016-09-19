@@ -1,22 +1,34 @@
 import urllib.request
 from bs4 import BeautifulSoup
-from pymarkovchain import MarkovChain
 
-# board_url = 'http://2ch.hk/b/'
-
-def get_thread_urls(board = 'b'):
+def get_thread_urls(board = 'b', n_pages = 5):
+    '''
+    Goes to `board`'s first `n_pages` pages and gets links to threads.
+    Returns a list of links to threads from the given `board`.
+    '''
     domain = 'http://2ch.hk'
-    board_url = domain + '/' + board + '/'
-    with urllib.request.urlopen(board_url) as response:
-       board_html = response.read()
+    thread_urls = []
 
-    board_soup = BeautifulSoup(board_html, 'lxml')
-    thread_urls = [domain + a.get('href') for a 
-                in board_soup.findAll(attrs = {'class': 'orange'})]
+    for page in range(1, n_pages + 1):
+        url = domain + '/' + board + '/' + str(page) + '.html'
+        print('Reading %s...' % url)
+        with urllib.request.urlopen(url) as response:
+           html = response.read()
 
+        soup = BeautifulSoup(html, 'lxml')
+        thread_urls += [domain + a.get('href') for a 
+                    in soup.findAll(attrs = {'class': 'orange'})]
+
+    print('Found: %s urls' % len(thread_urls))
     return thread_urls
     
+
 def get_posts_from_thread(url):
+    '''
+    Gets all text messages in the `url` thread.
+    Returns a list of strings.
+    '''
+
     with urllib.request.urlopen(url) as response:
         html = response.read()
     soup = BeautifulSoup(html, 'lxml')
@@ -33,25 +45,3 @@ def get_posts_from_thread(url):
 
     return posts
 
-# -------------------------------------------------
-
-thread_urls = get_thread_urls()
-
-threads = []
-for url in thread_urls:
-    threads.append(get_posts_from_thread(url))
-
-text = '\n'.join(['\n'.join(thread) for thread in threads])
-
-
-def create_mc(text = text):
-    mc = MarkovChain()
-    mc.generateDatabase(text, '\n')
-    return mc
-
-def generate_strings(mc, n_strings = 50):
-    for _ in range(n_strings): 
-        print(mc.generateString())
-
-mc = create_mc()
-generate_strings(mc)
