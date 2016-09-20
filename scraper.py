@@ -20,7 +20,7 @@ def get_thread_urls(board = 'b', n_pages = 5):
         thread_urls += [domain + a.get('href') for a 
                     in soup.findAll(attrs = {'class': 'orange'})]
 
-    print('Found: %s urls' % len(thread_urls))
+    print('Found: %s thread urls' % len(thread_urls))
     return thread_urls
     
 
@@ -78,9 +78,10 @@ def create_mc(text = text):
     mc.generateDatabase(text, '\n')
     return mc
 
-def generate_strings(mc, n_strings = 50):
-    for _ in range(n_strings): 
-        print(mc.generateString())
-
 mc = create_mc()
-generate_strings(mc = mc)
+
+def generate_strings(mc = mc, n_strings = 50):
+    for _ in range(n_strings): 
+        print(mc.generateString(), '\n')
+
+generate_strings()
