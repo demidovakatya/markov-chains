@@ -2,6 +2,8 @@ import re
 import urllib.request
 from bs4 import BeautifulSoup
 
+TXT_DIR = 'b_posts'
+
 def get_thread_urls(board = 'b', n_pages = 5):
     '''
     Goes to `board`'s first `n_pages` pages and gets links to threads.
@@ -58,7 +60,7 @@ def make_text_from_posts(board = 'b', save_to_txt = True):
 
     if save_to_txt:
         filename = board + '_posts_' + text[:10] + '.txt'
-        with open(filename, 'w') as txt_file:
+        with open(TXT_DIR + '/' + filename, 'w') as txt_file:
             txt_file.write(text)
         print('Successfully saved bullshit to: %s\n' % filename)
 

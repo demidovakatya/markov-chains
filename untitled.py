@@ -4,7 +4,7 @@ import scraper
 
 text = scraper.make_text_from_posts()
 
-# txt_files = [f for f in os.listdir() if f.startswith('b_')]
+# txt_files = [f for f in os.listdir('b_posts')]
 # text = ''
 
 # for txt_file in txt_files:
