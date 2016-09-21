@@ -67,21 +67,22 @@ def make_text_from_posts(board = 'b', save_to_txt = True):
 # ============================================================
 # kinda test
 
-from pymarkovchain import MarkovChain
+# from pymarkovchain import MarkovChain
 
-# import scraper
+# # import scraper
 
-text = make_text_from_posts()
+# text = make_text_from_posts()
 
-def create_mc(text = text):
-    mc = MarkovChain()
-    mc.generateDatabase(text, '\n')
-    return mc
+# def create_mc(text = text):
+#     mc = MarkovChain()
+#     mc.generateDatabase(text, '\n')
+#     return mc
 
-mc = create_mc()
+# mc = create_mc()
 
-def generate_strings(mc = mc, n_strings = 50):
-    for _ in range(n_strings): 
-        print(mc.generateString(), '\n')
+# def generate_strings(mc = mc, n_strings = 50):
+#     for _ in range(n_strings): 
+#         print(mc.generateString(), '\n')
 
-generate_strings()
+# generate_strings()
+
