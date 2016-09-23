@@ -1,16 +1,10 @@
-import os
 import markovify
 import scraper
+import gen_markovify
 
-text = scraper.make_text_from_posts()
+# n_pages = input('Enter n_pages (1-5): ')
+urls = scraper.get_thread_urls(3)
 
-# txt_files = [f for f in os.listdir('b_posts')]
-# text = ''
-
-# for txt_file in txt_files:
-#     with open(txt_file) as f:
-#         text += f.read().lower()
-
+text = scraper.make_text(scraper.get_board_posts(urls))
 text_model = markovify.Text(text)
-
-for _ in range(25): print(text_model.make_sentence())
+gen_markovify.generate_sentences(text_model)
