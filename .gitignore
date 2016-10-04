@@ -1,3 +1,6 @@
 *.pyc
 b_posts/*
 posts/*
+*.html
+*.webarchive
+*.txt
