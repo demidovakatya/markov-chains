@@ -8,7 +8,7 @@ def get_paths_to_txt():
     for txt_item in os.listdir(TXT_DIR):
         if txt_item.endswith('.txt'):
             files.append(os.path.join(TXT_DIR, txt_item))
-        if os.path.isdir(txt_item):
+        if os.path.isdir(os.path.join(TXT_DIR, txt_item)):
             for item in os.listdir(os.path.join(TXT_DIR, txt_item)):
                 if item.endswith('.txt'):
                     files.append(os.path.join(TXT_DIR, txt_item, item))
@@ -40,4 +40,4 @@ def beautify(text = read_txt_files()):
     text = re.sub(r'&gt;', ' ', text)
     text = re.sub(r'\s+', ' ', text).strip()
     return text
-    
+
