@@ -28,12 +28,16 @@ def read_txt_files():
 
 def beautify(text = read_txt_files()):
     import re
-    text = text.lower()
+    # text = text.lower()
     # remove urls
-    text = re.sub('(http[s]?://(?:[a-zA-Z]|[0-9]|[$-_@.&+]|[!*\(\),]|(?:%[0-9a-fA-F][0-9a-fA-F]))+)', '', text)
+    text = re.sub('(http[s]?://(?:[a-zA-Z]|[0-9]|[$-_@.&+]|[!*\(\),#]|(?:%[0-9a-fA-F][0-9a-fA-F]))+)', '', text)
     # remove quotes, unnecessary punctuation, etc
     text = re.sub(r'>>[0-9]*|>', '', text)
-    text = re.sub(r'\(op\)|\(you\)', '', text)
-    text = re.sub(r'&gt;', ' ', text).strip()
+    text = re.sub(r'<+', ' ', text)
+    text = re.sub(r'\.{2,}', '. ', text)
+    text = re.sub(r'[\(|\)]{2,}', ' ', text)
+    text = re.sub(r'\(OP\)|\(YOU\)', '', text)
+    text = re.sub(r'&gt;', ' ', text)
+    text = re.sub(r'\s+', ' ', text).strip()
     return text
     
