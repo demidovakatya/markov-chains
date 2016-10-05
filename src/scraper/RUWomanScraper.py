@@ -1,11 +1,11 @@
-import urllib.request
 import re
+import urllib.request
 
 from bs4 import BeautifulSoup
 
 from src.Logger import Logger
-from src.scraper.AbstractScraper import AbstractScraper
 from src.Text import Text
+from src.scraper.AbstractScraper import AbstractScraper
 
 
 class RUWomanScraper(AbstractScraper):
