@@ -1,6 +1,7 @@
-import src.scraper.AbstractScraper as AbstractScraper
-import src.Logger as Logger
-import src.Text as Text
+from src.scraper.AbstractScraper import AbstractScraper
+from src.Logger import Logger
+from src.Text import Text
+
 import re
 import urllib.request
 from bs4 import BeautifulSoup
@@ -15,7 +16,7 @@ class BScraper(AbstractScraper):
         self.n_pages = n_pages
 
     def execute(self):
-        return self.__make_text(self.__get_board_posts(self.__get_thread_urls(self.n_pages)))
+        return self.__get_board_posts(self.__get_thread_urls(self.n_pages))
 
     def __get_thread_urls(self, n_pages):
         thread_urls = []
@@ -41,24 +42,20 @@ class BScraper(AbstractScraper):
         posts = []
         for hit in soup.findAll(attrs={'class' : 'post-message'}):
             this_post = hit.get_text(separator = ' ')
-            posts.append(this_post)
+            posts.append(Text(self.__format_text(this_post), url))
 
         return posts
 
     def __get_board_posts(self, thread_urls):
         board_posts = []
         for url in thread_urls:
-            board_posts += self.get_thread_posts(url)
+            board_posts += self.__get_thread_posts(url)
         return board_posts
 
     # remove quotes, unnecessary punctuation, etc
-    def __format_text(self, board_posts):
-        result = []
+    def __format_text(self, text):
+        text = re.sub(r'>>[0-9]*|>', '', text).lower()
+        text = re.sub(r'\(op\)|\(you\)', '', text)
+        text = re.sub(r'&gt;', ' ', text).strip()
 
-        for text in board_posts:
-            text = re.sub(r'>>[0-9]*|>', '', text).lower()
-            text = re.sub(r'\(op\)|\(you\)', '', text)
-            text = re.sub(r'&gt;', ' ', text).strip()
-            result.append(Text(text))
-
-        return result
+        return text
