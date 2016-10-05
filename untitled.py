@@ -8,6 +8,6 @@ text = core.beautify(text)
 mvf = generator.create_mvf(text)
 generator.generate(mvf)
 
-# pymarkovchain
-mch = generator.create_mc(text)
-generator.generate(mch)
+# # pymarkovchain
+# mch = generator.create_mc(text)
+# generator.generate(mch)
