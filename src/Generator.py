@@ -3,7 +3,7 @@ from pymarkovchain import MarkovChain
 from src.MText import MText
 
 
-class MarkovChainsGenerator:
+class Generator:
     def create_mc(self, text):
         model = MarkovChain()
         model.generateDatabase(text, '\n')
@@ -16,12 +16,12 @@ class MarkovChainsGenerator:
     def generate_sentences_mc(self, text, n=50):
         model = self.create_mc(text)
         for _ in range(n):
-            yield MText(model.generateString())
+            yield model.generateString()
 
     def generate_sentences_mvf(self, text, n=50):
         model = markovify.Text(text)
         for _ in range(n):
-            yield MText(model.make_sentence())
+            yield model.make_sentence()
 
     def generate_from_model(self, model):
         if str(type(model)) == "<class 'markovify.text.Text'>":
@@ -31,4 +31,4 @@ class MarkovChainsGenerator:
 
     def generate(self, model, n=50):
         for _ in range(n):
-            yield MText(self.generate_from_model(model))
+             yield self.generate_from_model(model)

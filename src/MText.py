@@ -3,4 +3,4 @@ class MText(object):
         self.payload = payload
 
     def __str__(self):
-        return self.payload
+        return "%s" % self.payload
