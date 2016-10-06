@@ -1,7 +1,8 @@
 class Text(object):
-    def __init__(self, payload, url = ''):
+    def __init__(self, source, payload, url=''):
+        self.source = source
         self.payload = payload
         self.url = url
 
-    def __repr__(self):
-        return "(%s): %s" % (self.url, self.payload)
+    def __str__(self):
+        return "Source: %s, URL: %s, Payload: %s" % (self.source, self.url, self.payload)

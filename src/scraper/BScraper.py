@@ -1,18 +1,17 @@
-import re
 import urllib.request
+import logging
 
 from bs4 import BeautifulSoup
 
-from src.Logger import Logger
 from src.Text import Text
 from src.scraper.AbstractScraper import AbstractScraper
 
 
 class BScraper(AbstractScraper):
     DOMAIN = 'http://2ch.hk'
-    LOG = Logger()
 
     def __init__(self, board, n_pages):
+        super(BScraper, self).__init__('2ch')
         self.board = board
         self.n_pages = n_pages
 
@@ -23,15 +22,15 @@ class BScraper(AbstractScraper):
         thread_urls = []
         for page in range(1, n_pages + 1):
             url = self.DOMAIN + '/' + self.board + '/' + str(page) + '.html'
-            self.LOG.info('Reading %s...' % url)
+            logging.info('Reading %s...' % url)
 
             with urllib.request.urlopen(url) as response:
                 html = response.read()
 
             soup = BeautifulSoup(html, 'html5lib')
             thread_urls += [self.DOMAIN + a.get('href') for a
-                            in soup.findAll(attrs = {'class': 'orange'})]
-        self.LOG.info('Found: %s threads.' % len(thread_urls))
+                            in soup.findAll(attrs={'class': 'orange'})]
+        logging.info('Found: %s threads.' % len(thread_urls))
 
         return thread_urls
 
@@ -41,9 +40,11 @@ class BScraper(AbstractScraper):
         soup = BeautifulSoup(html, 'html5lib')
 
         posts = []
-        for hit in soup.findAll(attrs={'class' : 'post-message'}):
-            this_post = hit.get_text(separator = ' ')
-            posts.append(Text(self.__format_text(this_post), url))
+        for hit in soup.findAll(attrs={'class': 'post-message'}):
+            this_post = hit.get_text(separator=' ')
+            text = Text(self.source, self.beautify(this_post), url)
+            logging.debug(text)
+            posts.append(text)
 
         return posts
 
@@ -52,11 +53,3 @@ class BScraper(AbstractScraper):
         for url in thread_urls:
             board_posts += self.__get_thread_posts(url)
         return board_posts
-
-    # remove quotes, unnecessary punctuation, etc
-    def __format_text(self, text):
-        text = re.sub(r'>>[0-9]*|>', '', text).lower()
-        text = re.sub(r'\(op\)|\(you\)', '', text)
-        text = re.sub(r'&gt;', ' ', text).strip()
-
-        return text

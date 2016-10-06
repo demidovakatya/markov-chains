@@ -1,5 +1,5 @@
 from src.storage.AbstractStorage import AbstractStorage
-from src.Logger import Logger
+from src.utils.Logger import Logger
 
 
 class TextFileStorage(AbstractStorage):

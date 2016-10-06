@@ -3,16 +3,16 @@ import urllib.request
 
 from bs4 import BeautifulSoup
 
-from src.Logger import Logger
 from src.Text import Text
 from src.scraper.AbstractScraper import AbstractScraper
+import logging
 
 
 class GalyaScraper(AbstractScraper):
     DOMAIN = 'http://galya.ru'
-    LOG = Logger()
 
     def __init__(self, n_pages):
+        super(GalyaScraper, self).__init__('galya.ru')
         self.n_pages = n_pages
 
     def execute(self):
@@ -22,7 +22,7 @@ class GalyaScraper(AbstractScraper):
         threads_urls = []
         for page in range(0, n_pages):
             url = self.DOMAIN + '/clubs/index.php?dlimit=%s&p=1&board_id=0&ltype=0' % (page * 115)
-            self.LOG.info('Reading %s...' % url)
+            logging.info('Reading %s...' % url)
 
             with urllib.request.urlopen(url) as response:
                 html = response.read()
@@ -30,7 +30,7 @@ class GalyaScraper(AbstractScraper):
             soup = BeautifulSoup(html, 'html5lib')
             threads_urls += [self.DOMAIN + '/clubs/' + re.sub('&.*', '', a.get('href')) for a
                              in soup.findAll(attrs={'title': 'дата последнего комментария'})]
-        self.LOG.info('Found: %s threads.' % len(threads_urls))
+        logging.info('Found: %s threads.' % len(threads_urls))
 
         return threads_urls
 
@@ -41,8 +41,10 @@ class GalyaScraper(AbstractScraper):
 
         posts = []
         for hit in soup.findAll(attrs={'class': 'text'}):
-            this_post = hit.get_text(separator=' ').strip()
-            posts.append(Text(this_post, url))
+            this_post = hit.get_text(separator=' ')
+            text = Text(self.source, self.beautify(this_post), url)
+            logging.debug(text)
+            posts.append(text)
 
         return posts
 

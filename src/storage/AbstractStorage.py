@@ -3,9 +3,9 @@ from abc import ABC, abstractmethod
 
 class AbstractStorage(ABC):
     @abstractmethod
-    def store(self, text, group_name):
+    def store(self, text):
         pass
 
     @abstractmethod
-    def get(self, group_name):
+    def get(self, source):
         pass

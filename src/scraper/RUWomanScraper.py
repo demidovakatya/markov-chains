@@ -1,19 +1,18 @@
-import re
 import urllib.request
 
 from bs4 import BeautifulSoup
 
-from src.Logger import Logger
 from src.Text import Text
 from src.scraper.AbstractScraper import AbstractScraper
+import logging
 
 
 class RUWomanScraper(AbstractScraper):
     BASE_URL = 'http://www.woman.ru'
     BASE_FORUM_URL = BASE_URL + '/forum/'
-    LOG = Logger()
 
     def __init__(self, n_pages, n_pages_per_thread):
+        super(RUWomanScraper, self).__init__('woman.ru')
         self.n_pages = n_pages
         self.n_pages_per_thread = n_pages_per_thread
 
@@ -70,11 +69,11 @@ class RUWomanScraper(AbstractScraper):
         forum_pagination_links = self.__get_pagination_links(self.BASE_FORUM_URL, n_pages)
 
         for forum_page_link in forum_pagination_links:
-            self.LOG.info('Reading %s...' % forum_page_link)
+            logging.info('Reading %s...' % forum_page_link)
 
             thread_links = self.__get_thread_links(forum_page_link)
 
-            self.LOG.info('Found: %s threads.' % len(thread_links))
+            logging.info('Found: %s threads.' % len(thread_links))
 
             for thread_link in thread_links:
                 thread_pagination_links = self.__get_pagination_links(thread_link, n_pages_per_thread)
@@ -91,10 +90,8 @@ class RUWomanScraper(AbstractScraper):
             reply = comment.find("div", attrs={'class': 'reply'})
             if (reply != None):
                 reply.extract()
-            print(Text(self.__format_text(comment.get_text()), url))
-            result.append(Text(self.__format_text(comment.get_text()), url))
+            text = Text(self.source, self.beautify(comment.get_text()), url)
+            logging.debug(text)
+            result.append(text)
 
         return result
-
-    def __format_text(self, text):
-        return re.sub('[\n\r]', ' ', text).strip()

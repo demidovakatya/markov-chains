@@ -3,14 +3,16 @@ import urllib.request
 
 from bs4 import BeautifulSoup
 
-from src.Logger import Logger
 from src.Text import Text
 from src.scraper.AbstractScraper import AbstractScraper
+import logging
 
 
 class KrovostokScraper(AbstractScraper):
     BASE_URL = 'http://www.krovostok.ru/lyrics/'
-    LOG = Logger()
+
+    def __init__(self):
+        super(KrovostokScraper, self).__init__('krovostok')
 
     def execute(self):
         result = []
@@ -51,6 +53,8 @@ class KrovostokScraper(AbstractScraper):
         lyric = soup.find(attrs={'class': 'style2'}).get_text()
 
         for line in lyric.split('\t'):
-            lyrics.append(Text(re.sub('\s\s+', ' ', line.strip()), url))
+            text = Text(self.source, re.sub('\s\s+', ' ', self.beautify(line)), url)
+            logging.debug(text)
+            lyrics.append(text)
 
         return lyrics
