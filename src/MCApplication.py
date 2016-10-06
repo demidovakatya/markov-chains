@@ -18,7 +18,6 @@ class MCApplication:
         # init
         storage = TextFileStorage(self.TXT_DIR)
         scraper = KrovostokScraper()
-        generator = Generator()
         output = ConsoleWriter()
 
         # parse
@@ -38,8 +37,8 @@ class MCApplication:
         #     output.write(m_text)
 
         # pymarkovchain
-        mch = generator.create_mc('\n'.join(texts))
-        for m_text in generator.generate(mch):
+        mch = Generator.create_mc('\n'.join(texts))
+        for m_text in Generator.generate(mch):
             output.write(m_text)
 
 
