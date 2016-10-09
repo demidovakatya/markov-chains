@@ -1,3 +1,4 @@
+import logging
 import re
 import urllib.request
 
@@ -5,13 +6,12 @@ from bs4 import BeautifulSoup
 
 from src.Text import Text
 from src.scraper.AbstractScraper import AbstractScraper
-import logging
 
 
 class GalyaScraper(AbstractScraper):
     DOMAIN = 'http://galya.ru'
 
-    def __init__(self, n_pages):
+    def __init__(self, n_pages=1):
         super(GalyaScraper, self).__init__('galya.ru')
         self.n_pages = n_pages
 

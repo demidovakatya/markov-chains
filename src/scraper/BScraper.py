@@ -1,5 +1,5 @@
-import urllib.request
 import logging
+import urllib.request
 
 from bs4 import BeautifulSoup
 
@@ -10,7 +10,7 @@ from src.scraper.AbstractScraper import AbstractScraper
 class BScraper(AbstractScraper):
     DOMAIN = 'http://2ch.hk'
 
-    def __init__(self, board, n_pages):
+    def __init__(self, board='b', n_pages=5):
         super(BScraper, self).__init__('2ch')
         self.board = board
         self.n_pages = n_pages

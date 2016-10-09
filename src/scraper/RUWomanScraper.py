@@ -11,7 +11,7 @@ class RUWomanScraper(AbstractScraper):
     BASE_URL = 'http://www.woman.ru'
     BASE_FORUM_URL = BASE_URL + '/forum/'
 
-    def __init__(self, n_pages, n_pages_per_thread):
+    def __init__(self, n_pages=5, n_pages_per_thread=-1):
         super(RUWomanScraper, self).__init__('woman.ru')
         self.n_pages = n_pages
         self.n_pages_per_thread = n_pages_per_thread

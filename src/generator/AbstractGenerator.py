@@ -1,12 +1,11 @@
 from abc import ABC, abstractmethod
 
 
-class AbstractStorage(ABC):
+class AbstractGenerator(ABC):
     @abstractmethod
-    def store(self, source, texts):
+    def init_model(self, texts):
         pass
 
     @abstractmethod
-    def get(self, sources):
+    def generate(self, texts, n):
         pass
-
