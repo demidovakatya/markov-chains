@@ -1,11 +1,11 @@
+import logging
 import urllib.request
-
 from urllib.request import HTTPError
+
 from bs4 import BeautifulSoup
 
-from src.Text import Text
+from src.domain.Text import Text
 from src.scraper.AbstractScraper import AbstractScraper
-import logging
 
 
 class RUWomanScraper(AbstractScraper):

@@ -1,8 +1,9 @@
-from src.storage.AbstractStorage import AbstractStorage
-import pickle
-import os
 import logging
-from src.Util import argument_to_list
+import os
+import pickle
+import collections
+
+from src.storage.AbstractStorage import AbstractStorage
 
 
 class BinaryFileStorage(AbstractStorage):
@@ -22,7 +23,9 @@ class BinaryFileStorage(AbstractStorage):
     def get(self, sources):
         texts = []
 
-        for source in argument_to_list(sources):
+        if not isinstance(sources, collections.Iterable): sources = [sources]
+
+        for source in sources:
             with open(self.base_dir + '/' + source + '.bin', 'rb') as file:
                 logging.info("Reading file: %s" % file)
                 texts += pickle.load(file)

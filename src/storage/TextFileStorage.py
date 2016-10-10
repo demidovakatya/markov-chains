@@ -1,9 +1,10 @@
-from src.storage.AbstractStorage import AbstractStorage
-from src.Text import Text
-from src.Util import argument_to_list
 import logging
 import os
 import re
+import collections
+
+from src.domain.Text import Text
+from src.storage.AbstractStorage import AbstractStorage
 
 
 class TextFileStorage(AbstractStorage):
@@ -11,9 +12,11 @@ class TextFileStorage(AbstractStorage):
         self.base_dir = base_dir
 
     def store(self, source, texts):
-        texts = argument_to_list(texts)
+        if isinstance(type(texts), collections.Iterable): texts = [texts]
+
         if not os.path.exists(self.base_dir):
             os.makedirs(self.base_dir)
+
         with open(self.base_dir + '/' + source + '.txt', 'w', encoding='utf8') as file:
             logging.info("Writing to file %s" % file)
             for text in texts:
@@ -26,7 +29,9 @@ class TextFileStorage(AbstractStorage):
     def get(self, sources):
         texts = []
 
-        for source in argument_to_list(sources):
+        if isinstance(type(sources), collections.Iterable): sources = [sources]
+
+        for source in sources:
             file = self.base_dir + '/' + source + '.txt'
             logging.info("Reading file: %s" % file)
             fragments = [self.__deserialize(f) for f in open(file, encoding='utf8').read().split('\n')]

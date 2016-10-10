@@ -1,5 +1,5 @@
+from src.domain.MText import MText
 from src.generator.AbstractGenerator import AbstractGenerator
-from src.MText import MText
 
 
 class PyMarkovChainGenerator(AbstractGenerator):

@@ -1,15 +1,17 @@
-from src.Util import argument_to_list
-from src.scraper.GalyaScraper import GalyaScraper
 from src.scraper.BScraper import BScraper
+from src.scraper.GalyaScraper import GalyaScraper
 from src.scraper.KrovostokScraper import KrovostokScraper
 from src.scraper.RUWomanScraper import RUWomanScraper
+import collections
 
 
 class Scrapers:
     def make(self, scrapers):
         result = []
 
-        for scraper in argument_to_list(scrapers):
+        if not isinstance(scrapers, collections.Iterable): scrapers = [scrapers]
+
+        for scraper in scrapers:
             result.append(self.__get_instance(scraper))
 
         return result

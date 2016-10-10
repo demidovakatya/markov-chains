@@ -9,4 +9,3 @@ class AbstractStorage(ABC):
     @abstractmethod
     def get(self, sources):
         pass
-

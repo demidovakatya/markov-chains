@@ -1,27 +1,35 @@
-from src.scraper.Scrapers import Scrapers
-from src.storage.TextFileStorage import TextFileStorage
-from src.storage.BinaryFileStorage import BinaryFileStorage
-from src.writer.ConsoleWriter import ConsoleWriter
 from src.generator.Generators import Generators
+from src.scraper.Scrapers import Scrapers
+from src.storage.BinaryFileStorage import BinaryFileStorage
+from src.writer.Writers import Writers
 
 
 class MCApplication:
-    def run(self, config):
-        # init
-        # storage = TextFileStorage(config['storage_path'])
-        storage = BinaryFileStorage(config['storage_path'])
-        scrapers = Scrapers().make(config['scrapers'])
-        generator = Generators().make(config['generator'])
-        output = ConsoleWriter()
+    def __init__(self, config):
+        self.storage = BinaryFileStorage(config['storage_path'])
+        self.scrapers = Scrapers().make(config['scrapers'])
+        self.generator = Generators().make(config['generator'])
+        self.writer = Writers().make(config['writer'], config['storage_path'])
+        self.mode = config['mode']
+        self.output_size = config['output_size']
 
-        # parse and store
-        for scraper in scrapers:
-            storage.store(scraper.source, scraper.execute())
+    def run(self):
+        if self.mode == 'parse':
+            self.__parse_and_store()
+        elif self.mode == 'generate':
+            self.__get_and_generate()
+        elif self.mode == 'all':
+            self.__parse_and_store()
+            self.__get_and_generate()
+        else:
+            raise Exception('Unsupported mode: %s!' % self.mode)
 
-        # get from storage
-        texts = storage.get(map(lambda sc: sc.source, scrapers))
+    def __parse_and_store(self):
+        for scraper in self.scrapers:
+            self.storage.store(scraper.source, scraper.execute())
 
-        # run through mc and display
-        model = generator.init_model(texts)
-        for m_text in generator.generate(model, config['output_size']):
-            output.write(m_text)
+    def __get_and_generate(self):
+        texts = self.storage.get(map(lambda sc: sc.source, self.scrapers))
+        model = self.generator.init_model(texts)
+        for m_text in self.generator.generate(model, self.output_size):
+            self.writer.write(m_text)

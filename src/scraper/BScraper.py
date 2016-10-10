@@ -3,7 +3,7 @@ import urllib.request
 
 from bs4 import BeautifulSoup
 
-from src.Text import Text
+from src.domain.Text import Text
 from src.scraper.AbstractScraper import AbstractScraper
 
 

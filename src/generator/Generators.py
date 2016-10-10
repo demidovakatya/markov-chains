@@ -1,5 +1,5 @@
-from src.generator.PyMarkovChainGenerator import PyMarkovChainGenerator
 from src.generator.MarkovifyGenerator import MarkovifyGenerator
+from src.generator.PyMarkovChainGenerator import PyMarkovChainGenerator
 
 
 class Generators:
@@ -8,3 +8,5 @@ class Generators:
             return PyMarkovChainGenerator()
         elif generator == 'mvf':
             return MarkovifyGenerator()
+        else:
+            raise Exception('Not existing generator: %s!' % generator)
