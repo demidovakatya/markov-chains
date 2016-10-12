@@ -21,7 +21,8 @@ class RUWomanScraper(AbstractScraper):
         result = []
         for thread_url in self.__get_all_thread_links(self.n_pages, self.n_pages_per_thread):
             try:
-                result += self.__parse_thread(self.__get_page_content(thread_url), thread_url)
+                result += self.__parse_thread(
+                    self.__get_page_content(thread_url), thread_url)
             except HTTPError:
                 continue
 
@@ -66,7 +67,8 @@ class RUWomanScraper(AbstractScraper):
         return result
 
     def __get_all_thread_links(self, n_pages, n_pages_per_thread):
-        forum_pagination_links = self.__get_pagination_links(self.BASE_FORUM_URL, n_pages)
+        forum_pagination_links = self.__get_pagination_links(
+            self.BASE_FORUM_URL, n_pages)
 
         for forum_page_link in forum_pagination_links:
             logging.info('Reading %s...' % forum_page_link)
@@ -76,7 +78,8 @@ class RUWomanScraper(AbstractScraper):
             logging.info('Found: %s threads.' % len(thread_links))
 
             for thread_link in thread_links:
-                thread_pagination_links = self.__get_pagination_links(thread_link, n_pages_per_thread)
+                thread_pagination_links = self.__get_pagination_links(
+                    thread_link, n_pages_per_thread)
                 for thread_page_link in thread_pagination_links:
                     yield thread_page_link
 

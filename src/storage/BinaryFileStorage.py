@@ -7,6 +7,7 @@ from src.storage.AbstractStorage import AbstractStorage
 
 
 class BinaryFileStorage(AbstractStorage):
+
     def __init__(self, base_dir):
         self.base_dir = base_dir
 
@@ -18,12 +19,14 @@ class BinaryFileStorage(AbstractStorage):
             logging.info("Writing to file: %s" % file)
             pickle.dump(texts, file)
 
-        logging.info('Successfully saved %s posts to: %s/%s' % (len(texts), self.base_dir, source))
+        logging.info('Successfully saved %s posts to: %s/%s' %
+                     (len(texts), self.base_dir, source))
 
     def get(self, sources):
         texts = []
 
-        if not isinstance(sources, collections.Iterable): sources = [sources]
+        if not isinstance(sources, collections.Iterable):
+            sources = [sources]
 
         for source in sources:
             with open(self.base_dir + '/' + source + '.bin', 'rb') as file:

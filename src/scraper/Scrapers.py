@@ -6,10 +6,12 @@ import collections
 
 
 class Scrapers:
+
     def make(self, scrapers):
         result = []
 
-        if not isinstance(scrapers, collections.Iterable): scrapers = [scrapers]
+        if not isinstance(scrapers, collections.Iterable):
+            scrapers = [scrapers]
 
         for scraper in scrapers:
             result.append(self.__get_instance(scraper))

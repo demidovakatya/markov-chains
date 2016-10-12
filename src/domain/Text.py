@@ -1,4 +1,5 @@
 class Text(object):
+
     def __init__(self, source, payload, url=''):
         self.source = source
         self.payload = payload

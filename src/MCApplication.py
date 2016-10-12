@@ -5,6 +5,7 @@ from src.writer.Writers import Writers
 
 
 class MCApplication:
+
     def __init__(self, config):
         self.storage = BinaryFileStorage(config['storage_path'])
         self.scrapers = Scrapers().make(config['scrapers'])

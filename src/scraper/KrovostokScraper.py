@@ -53,7 +53,8 @@ class KrovostokScraper(AbstractScraper):
         lyric = soup.find(attrs={'class': 'style2'}).get_text()
 
         for line in lyric.split('\t'):
-            text = Text(self.source, re.sub('\s\s+', ' ', self.beautify(line)), url)
+            text = Text(
+                self.source, re.sub('\s\s+', ' ', self.beautify(line)), url)
             logging.debug(text)
             lyrics.append(text)
 

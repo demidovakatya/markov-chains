@@ -21,7 +21,9 @@ class GalyaScraper(AbstractScraper):
     def __get_threads_urls(self, n_pages=1):
         threads_urls = []
         for page in range(0, n_pages):
-            url = self.DOMAIN + '/clubs/index.php?dlimit=%s&p=1&board_id=0&ltype=0' % (page * 115)
+            url = self.DOMAIN + \
+                '/clubs/index.php?dlimit=%s&p=1&board_id=0&ltype=0' % (
+                    page * 115)
             logging.info('Reading %s...' % url)
 
             with urllib.request.urlopen(url) as response:

@@ -3,6 +3,7 @@ from src.generator.PyMarkovChainGenerator import PyMarkovChainGenerator
 
 
 class Generators:
+
     def make(self, generator):
         if generator == 'mc':
             return PyMarkovChainGenerator()

@@ -3,6 +3,7 @@ from abc import ABC, abstractmethod
 
 
 class AbstractScraper(ABC):
+
     def __init__(self, source):
         self.source = source
 
@@ -13,7 +14,8 @@ class AbstractScraper(ABC):
     def beautify(self, text):
         # text = text.lower()
         # remove urls
-        text = re.sub('(http[s]?://(?:[a-zA-Z]|[0-9]|[$-_@.&+]|[!*\(\),#]|(?:%[0-9a-fA-F][0-9a-fA-F]))+)', '', text)
+        text = re.sub(
+            '(http[s]?://(?:[a-zA-Z]|[0-9]|[$-_@.&+]|[!*\(\),#]|(?:%[0-9a-fA-F][0-9a-fA-F]))+)', '', text)
         # remove quotes, unnecessary punctuation, etc
         text = re.sub(r'>>[0-9]*|>', '', text)
         text = re.sub(r'<+', ' ', text)
