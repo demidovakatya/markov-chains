@@ -1,9 +1,12 @@
 import re
+import urllib.request
+from http.client import IncompleteRead
 from abc import ABC, abstractmethod
+
+from bs4 import BeautifulSoup
 
 
 class AbstractScraper(ABC):
-
     def __init__(self, source):
         self.source = source
 
@@ -25,3 +28,15 @@ class AbstractScraper(ABC):
         text = re.sub(r'&gt;', ' ', text)
         text = re.sub(r'\s+', ' ', text).strip()
         return text
+
+    def get_page_content(self, url, encoding='utf8'):
+        try:
+            with urllib.request.urlopen(url) as response:
+                html = response.read().decode(encoding)
+        except IncompleteRead as e:
+            html = e.partial
+
+        return html
+
+    def init_soup(self, html, lib='html5lib'):
+        return BeautifulSoup(html, lib)

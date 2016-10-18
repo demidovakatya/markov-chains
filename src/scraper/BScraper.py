@@ -1,7 +1,4 @@
 import logging
-import urllib.request
-
-from bs4 import BeautifulSoup
 
 from src.domain.Text import Text
 from src.scraper.AbstractScraper import AbstractScraper
@@ -16,40 +13,27 @@ class BScraper(AbstractScraper):
         self.n_pages = n_pages
 
     def execute(self):
-        return self.__get_board_posts(self.__get_thread_urls(self.n_pages))
+        for thread_url in self.__get_thread_urls(self.n_pages):
+            for text in self.__get_thread_posts(thread_url):
+                yield text
+
+    def __make_thread_url(self, page):
+        return self.DOMAIN + '/' + self.board + '/' + str(page) + '.html'
 
     def __get_thread_urls(self, n_pages):
-        thread_urls = []
         for page in range(1, n_pages + 1):
-            url = self.DOMAIN + '/' + self.board + '/' + str(page) + '.html'
+            url = self.__make_thread_url(page)
             logging.info('Reading %s...' % url)
 
-            with urllib.request.urlopen(url) as response:
-                html = response.read()
-
-            soup = BeautifulSoup(html, 'html5lib')
-            thread_urls += [self.DOMAIN + a.get('href') for a
-                            in soup.findAll(attrs={'class': 'orange'})]
-        logging.info('Found: %s threads.' % len(thread_urls))
-
-        return thread_urls
+            soup = self.init_soup(self.get_page_content(url))
+            for link in soup.findAll(attrs={'class': 'orange'}):
+                yield self.DOMAIN + link.get('href')
 
     def __get_thread_posts(self, url):
-        with urllib.request.urlopen(url) as response:
-            html = response.read()
-        soup = BeautifulSoup(html, 'html5lib')
-
-        posts = []
+        soup = self.init_soup(self.get_page_content(url))
         for hit in soup.findAll(attrs={'class': 'post-message'}):
-            this_post = hit.get_text(separator=' ')
-            text = Text(self.source, self.beautify(this_post), url)
-            logging.debug(text)
-            posts.append(text)
-
-        return posts
-
-    def __get_board_posts(self, thread_urls):
-        board_posts = []
-        for url in thread_urls:
-            board_posts += self.__get_thread_posts(url)
-        return board_posts
+            payload = self.beautify(hit.get_text(separator=' '))
+            if payload != '':
+                text = Text(self.source, payload, url)
+                logging.debug(text)
+                yield text

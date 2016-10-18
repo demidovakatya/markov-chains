@@ -27,7 +27,7 @@ class MCApplication:
 
     def __parse_and_store(self):
         for scraper in self.scrapers:
-            self.storage.store(scraper.source, scraper.execute())
+            self.storage.store(scraper.source, list(scraper.execute()))
 
     def __get_and_generate(self):
         texts = self.storage.get(map(lambda sc: sc.source, self.scrapers))

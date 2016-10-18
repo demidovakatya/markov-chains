@@ -1,12 +1,12 @@
+import collections
+
 from src.scraper.BScraper import BScraper
 from src.scraper.GalyaScraper import GalyaScraper
 from src.scraper.KrovostokScraper import KrovostokScraper
 from src.scraper.RUWomanScraper import RUWomanScraper
-import collections
 
 
 class Scrapers:
-
     def make(self, scrapers):
         result = []
 
