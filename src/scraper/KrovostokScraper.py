@@ -9,53 +9,49 @@ from src.scraper.AbstractScraper import AbstractScraper
 
 
 class KrovostokScraper(AbstractScraper):
-    BASE_URL = 'http://www.krovostok.ru/lyrics/'
+    SITE_URL = 'http://hip-hop.name'
+    BASE_URL = SITE_URL + '/text/krovostok/'
 
     def __init__(self):
         super(KrovostokScraper, self).__init__('krovostok')
 
     def execute(self):
         result = []
-        for url in self.__get_urls():
-            result += self.__parse_lyrics(self.__get_page_content(url), url)
+        for album_link in self.__get_albums_links():
+            for track_link in self.__get_tracks_links(album_link):
+                for text in self.__parse_lyrics(track_link):
+                    result.append(text)
 
         return result
 
-    def __get_urls(self):
-        urls = []
+    def __get_site_links(self, base_url, href_matcher):
+        soup = self.__init_soup(self.__get_page_content(base_url))
+        for link in soup.find(name='ul', attrs={'class': 'sitemap'}) \
+                .findAll(name='a', href=href_matcher):
+            yield self.SITE_URL + link['href']
 
-        for i in range(1, 14):
-            id = '0' + str(i)
-            id = id[-2:]
-            urls.append(self.BASE_URL + 'gantalya/gan%s.html' % id)
+    def __get_albums_links(self):
+        return self.__get_site_links(self.BASE_URL, re.compile(r'album'))
 
-        for i in range(1, 16):
-            id = '0' + str(i)
-            id = id[-2:]
-            urls.append(self.BASE_URL + 'skvoznoye/LS%s.html' % id)
-
-        for i in range(1, 11):
-            id = '0' + str(i)
-            id = id[-2:]
-            urls.append(self.BASE_URL + 'L%s.html' % id)
-
-        return urls
+    def __get_tracks_links(self, album_link):
+        return self.__get_site_links(album_link, True)
 
     def __get_page_content(self, url):
         with urllib.request.urlopen(url) as response:
-            html = response.read().decode('cp1251')
+            html = response.read().decode('utf8')
 
         return html
 
-    def __parse_lyrics(self, html, url):
-        lyrics = []
-        soup = BeautifulSoup(html, 'html5lib')
-        lyric = soup.find(attrs={'class': 'style2'}).get_text()
+    def __init_soup(self, html):
+        return BeautifulSoup(html, 'html5lib')
 
-        for line in lyric.split('\t'):
-            text = Text(
-                self.source, re.sub('\s\s+', ' ', self.beautify(line)), url)
-            logging.debug(text)
-            lyrics.append(text)
+    def __parse_lyrics(self, url):
+        soup = self.__init_soup(self.__get_page_content(url))
+        lyrics = soup.find(name='div', attrs={'class': 'entry'}).get_text()
 
-        return lyrics
+        for line in lyrics.split('\n'):
+            payload = self.beautify(line)
+            if payload != '':
+                text = Text(self.source, payload, url)
+                logging.debug(text)
+                yield text
