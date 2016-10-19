@@ -1,6 +1,5 @@
 import argparse
 import logging.config
-
 from src.MCApplication import MCApplication
 
 
@@ -9,27 +8,49 @@ def main():
     logging.config.fileConfig('./logging.conf')
     MCApplication(args).run()
 
-
 def __parse_args():
-    parser = argparse.ArgumentParser(
-        description='Run markov-chains application')
-    parser.add_argument('--scrapers', metavar='SC', nargs='*',
+    description = '''
+                  Run markov-chains application.\n\nExample:\n\t
+                  run.py --scrapers 'b' --generator 'mvf' --output_size 10
+                  '''
+    
+    parser = argparse.ArgumentParser(description=description)
+    
+    parser.add_argument('--scrapers', 
+                        metavar='SC', 
+                        nargs='*',
                         choices=['b', 'galya.ru', 'krovostok', 'woman.ru'],
                         required=True,
-                        help='List of scrapers to run and use.')
-    parser.add_argument('--mode', action='store', default='all',
+                        help="(str or array of str from {'b', 'galya.ru', 'krovostok', 'woman.ru'}) ---- Scrapers to use for getting data from the web.")
+    
+    parser.add_argument('--mode', 
+                        action='store', 
+                        default='all',
                         choices=['all', 'parse', 'generate'],
-                        help='Run in which mode.')
-    parser.add_argument('--writer', action='store', default='console',
+                        help="({'all', 'parse', 'generate'}, default 'all') ---- Mode in which the script should be run. If 'all' (default), it will parse the data and generate strings from it. If 'parse', new data will be parsed only. If 'generate', generated strings will be streamed to output.")
+    
+    parser.add_argument('--writer', 
+                        action='store', 
+                        default='console',
                         choices=['console', 'txt'],
-                        help='Where to output the result.')
-    parser.add_argument('--generator', action='store', default='mvf',
+                        help="({'console', 'txt'}, default 'console') ---- Preferred output – console or txt file.")
+    
+    parser.add_argument('--generator', 
+                        action='store', 
+                        default='mvf',
                         choices=['mvf', 'mc'],
-                        help='Which markov-chains generator to use.')
-    parser.add_argument('--output_size', action='store', default=50, type=int,
-                        help='Output size.')
-    parser.add_argument('--storage_path', action='store', default='./storage',
-                        help='Where to store parse and generator results.')
+                        help="({'mvf', 'mc'}, default 'mvf') ---- Markov chains generator.")
+    
+    parser.add_argument('--output_size', 
+                        action='store', 
+                        default=50, 
+                        type=int,
+                        help='(int, default 50) ----- Number of lines to be sent to output.')
+    
+    parser.add_argument('--storage_path', 
+                        action='store', 
+                        default='./storage',
+                        help="(str, default './storage') ----- Path to txt file the output will be saved to. If --writer=='txt', set this argument (example: '~/Downloads/markov-chains/output.txt')." )
 
     return vars(parser.parse_args())
 
