@@ -1,12 +1,15 @@
 import re
 import urllib.request
 from http.client import IncompleteRead
+import string
+
 from abc import ABC, abstractmethod
 
 from bs4 import BeautifulSoup
 
 
 class AbstractScraper(ABC):
+
     def __init__(self, source):
         self.source = source
 
@@ -15,18 +18,26 @@ class AbstractScraper(ABC):
         pass
 
     def beautify(self, text):
-        # text = text.lower()
+        
         # remove urls
-        text = re.sub(
-            '(http[s]?://(?:[a-zA-Z]|[0-9]|[$-_@.&+]|[!*\(\),#]|(?:%[0-9a-fA-F][0-9a-fA-F]))+)', '', text)
-        # remove quotes, unnecessary punctuation, etc
-        text = re.sub(r'>>[0-9]*|>', '', text)
-        text = re.sub(r'<+', ' ', text)
-        text = re.sub(r'\.{2,}', '. ', text)
-        text = re.sub(r'[\(|\)]{2,}', ' ', text)
-        text = re.sub(r'\(OP\)|\(YOU\)', '', text)
-        text = re.sub(r'&gt;', ' ', text)
+        regex_url = re.compile(r'https?://[^\s]*')
+        text = regex_url.sub(' ', text)
+
+        # remove specific shit     
+        text = re.sub(r'>>[0-9]*|\(OP\)|\(YOU\)', '', text)
+        text = re.sub(r'&gt;|\s+', '', text)
+
+        # remove punctuation
+        punct = ''.join([p for p in string.punctuation if p not in ('.,-?')])
+        regex_punct = re.compile('[%s]' % re.escape(punctuation))
+        text = regex_punct.sub(' ', text)
+
+        # remove extra spaces
         text = re.sub(r'\s+', ' ', text).strip()
+        
+        # lower
+        text = text.lower()
+
         return text
 
     def get_page_content(self, url, encoding='utf8'):
