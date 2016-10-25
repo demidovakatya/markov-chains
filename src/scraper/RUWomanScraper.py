@@ -1,4 +1,6 @@
 import logging
+
+from urllib.parse import urljoin
 from urllib.request import HTTPError
 
 from src.domain.Text import Text
@@ -6,48 +8,60 @@ from src.scraper.AbstractScraper import AbstractScraper
 
 
 class RUWomanScraper(AbstractScraper):
-    BASE_URL = 'http://www.woman.ru'
-    BASE_FORUM_URL = BASE_URL + '/forum/'
+    """RUWomanScraper
+    arguments:
+        pagelimit    (int): how many forum pages to parse
+        thread_limit (int): how many pages in one thread to parse
+    """
+    INDEX = 'http://www.woman.ru'
+    FORUM = INDEX + '/forum/'
 
-    def __init__(self, n_pages=1, n_pages_per_thread=1):
+    def __init__(self, pagelimit=1, thread_limit=1):
         super(RUWomanScraper, self).__init__('woman.ru')
-        self.n_pages = n_pages
-        self.n_pages_per_thread = n_pages_per_thread
+        self.pagelimit = pagelimit
+        self.thread_limit = thread_limit
 
     def execute(self):
-        for thread_url in self.__get_thread_urls(self.n_pages, self.n_pages_per_thread):
-            try:
-                for text in self.__get_thread_posts(thread_url):
-                    yield text
-            except HTTPError:
-                continue
+        thread_urls = self.__get_thread_urls(self.pagelimit, self.thread_limit)
 
-    def __get_thread_urls(self, n_pages, n_pages_per_thread):
-        for forum_page_link in self.__get_pagination_links(
-                self.BASE_FORUM_URL, n_pages):
+        try:
+            # for text in self.__get_thread_posts(thread_url):
+            #     yield text
+            texts = [text for text in self.__get_thread_posts(thread_url)]
+        except HTTPError:
+            continue
+
+    def __get_thread_urls(self, pagelimit, thread_limit):
+        
+        for forum_page_link in self.__get_pagination_links(self.FORUM_INDEX, pagelimit):
             logging.info('Reading %s...' % forum_page_link)
 
             for thread_link in self.__get_thread_links(forum_page_link):
-                for thread_page_link in self.__get_pagination_links(
-                        thread_link, n_pages_per_thread):
+                for thread_page_link in self.__get_pagination_links(thread_link, thread_limit):
                     yield thread_page_link
 
-    def __get_thread_posts(self, url):
+
+    def __parse_posts(self, url):
+        
         soup = self.init_soup(self.get_page_content(url))
+        
         for hit in soup.find_all('div', attrs={'class': 'text'}):
             reply = hit.find("div", attrs={'class': 'reply'})
+
             if reply is not None:
                 reply.extract()
             payload = self.beautify(hit.get_text())
+
             if payload != '':
                 text = Text(self.source, payload, url)
                 logging.debug(text)
                 yield text
 
-    def __get_pagination_links(self, url, n_pages=-1):
+
+    def __get_pagination_links(self, url, pagelimit=-1):
         first_page = 1
-        last_page = n_pages
-        if n_pages == -1:
+        last_page = pagelimit
+        if pagelimit == -1:
             last_page = self.__get_last_page(self.get_page_content(url))
 
         for page in range(first_page, last_page + 1):
@@ -65,8 +79,11 @@ class RUWomanScraper(AbstractScraper):
                 return 1
 
     def __get_thread_links(self, url):
+
         soup = self.init_soup(self.get_page_content(url))
+        all_topics = soup.find(attrs={'class': 'all-topics'})
+
         for link in soup.find(attrs={'class': 'all-topics'}):
-            url = link.find("a")
+            url = link.find('a')
             if url is not None and url != -1:
-                yield self.BASE_URL + url.get("href")
+                yield self.INDEX + url.get('')

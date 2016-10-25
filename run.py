@@ -1,5 +1,6 @@
 import argparse
 import logging.config
+
 from src.MCApplication import MCApplication
 
 

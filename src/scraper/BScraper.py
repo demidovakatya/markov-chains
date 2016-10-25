@@ -5,7 +5,7 @@ from src.scraper.AbstractScraper import AbstractScraper
 
 
 class BScraper(AbstractScraper):
-    DOMAIN = 'http://2ch.hk'
+    INDEX = 'http://2ch.hk'
 
     def __init__(self, board='b', n_pages=5):
         super(BScraper, self).__init__('2ch')
@@ -18,7 +18,7 @@ class BScraper(AbstractScraper):
                 yield text
 
     def __make_thread_url(self, page):
-        return self.DOMAIN + '/' + self.board + '/' + str(page) + '.html'
+        return self.INDEX + '/' + self.board + '/' + str(page) + '.html'
 
     def __get_thread_urls(self, n_pages):
         for page in range(1, n_pages + 1):
@@ -26,13 +26,15 @@ class BScraper(AbstractScraper):
             logging.info('Reading %s...' % url)
 
             soup = self.init_soup(self.get_page_content(url))
+            
             for link in soup.findAll(attrs={'class': 'orange'}):
-                yield self.DOMAIN + link.get('href')
+                yield self.INDEX + link.get('href')
 
-    def __get_thread_posts(self, url):
+    def __get_thread_posts(self, url):        
         soup = self.init_soup(self.get_page_content(url))
         for hit in soup.findAll(attrs={'class': 'post-message'}):
             payload = self.beautify(hit.get_text(separator=' '))
+
             if payload != '':
                 text = Text(self.source, payload, url)
                 logging.debug(text)
