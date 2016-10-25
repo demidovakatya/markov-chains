@@ -24,17 +24,20 @@ class AbstractScraper(ABC):
         text = regex_url.sub(' ', text)
 
         # remove specific shit     
-        text = re.sub(r'>>[0-9]*|\(OP\)|\(YOU\)', '', text)
-        text = re.sub(r'&gt;|\s+', '', text)
+        text = re.sub(r'>>[0-9]*|\(OP\)|\(YOU\)', ' ', text)
+        text = re.sub(r'&gt;', ' ', text)
 
         # remove punctuation
         punct = ''.join([p for p in string.punctuation if p not in ('.,-?')])
-        regex_punct = re.compile('[%s]' % re.escape(punctuation))
+        regex_punct = re.compile('[%s]' % re.escape(punct))
         text = regex_punct.sub(' ', text)
+
+        # replace ё with е
+        text = re.sub('ё', 'е', text)
 
         # remove extra spaces
         text = re.sub(r'\s+', ' ', text).strip()
-        
+
         # lower
         text = text.lower()
         

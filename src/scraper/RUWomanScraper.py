@@ -24,12 +24,9 @@ class RUWomanScraper(AbstractScraper):
     def execute(self):
         thread_urls = self.__get_thread_urls(self.pagelimit, self.thread_limit)
 
-        try:
-            # for text in self.__get_thread_posts(thread_url):
-            #     yield text
-            texts = [text for text in self.__get_thread_posts(thread_url)]
-        except HTTPError:
-            continue
+        for thread_url in self.__get_thread_urls(self.pagelimit):
+            for text in self.__get_thread_posts(thread_url):
+                yield text
 
     def __get_thread_urls(self, pagelimit, thread_limit):
         
