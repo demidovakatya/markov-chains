@@ -1,54 +1,39 @@
 ## How to
 
-```shell
-$ python3 untitled.py
 ```
+usage: run.py [-h] --scrapers [SC [SC ...]] [--mode {all,parse,generate}]
+              [--writer {console,txt}] [--generator {mvf,mc}]
+              [--output_size OUTPUT_SIZE] [--storage_path STORAGE_PATH]
 
-or 
+Run markov-chains application. Example: run.py --scrapers 'b' --generator
+'mvf' --output_size 10
 
-```python
-In [1]: %run untitled.py
-```
-
-## Requirements
-
-You'll need:
-
-* `bs4`
-* `markovify`
-* `pymarkovchain`
-* `urllib`
-* `os`, `re` etc.
-
-## Structure
-
-```
-/markov-chains/
-|-- _scraper (pieces of code that get texts from web)
-|   |-- galya.py
-|   |-- b.py
-|   `-- krovostok.py
-|
-|-- legacy (legacy)
-|   `-- ...
-|
-|-- txt (texts)
-|   |-- galya -> 1xxxxxx.txt (many text files)
-|   |-- threads -> 1xxxxxxxx.txt (many text files)
-|   `-- krovostok_lyrics.txt
-|
-|-- core.py: (read and process text files)
-|        |-- get_paths_to_txt()
-|        |-- read_txt_files()
-|        `-- beautify()
-|
-|-- generator.py: (create models and sentences)
-|        |-- create_mc(), create_mvf()
-|        |-- generate_sentences_mc(), generate_sentences_mvf()
-|        |-- generate_from_model()
-|        `-- generate()
-|
-|-- untitled.py: (run all the stuff)
+optional arguments:
+  -h, --help            show this help message and exit
+  --scrapers [SC [SC ...]]
+                        (str or array of str from {'b', 'galya.ru',
+                        'krovostok', 'woman.ru'}) ---- Scrapers to use for
+                        getting data from the web.
+  --mode {all,parse,generate}
+                        ({'all', 'parse', 'generate'}, default 'all') ----
+                        Mode in which the script should be run. If 'all'
+                        (default), it will parse the data and generate strings
+                        from it. If 'parse', new data will be parsed only. If
+                        'generate', generated strings will be streamed to
+                        output.
+  --writer {console,txt}
+                        ({'console', 'txt'}, default 'console') ---- Preferred
+                        output – console or txt file.
+  --generator {mvf,mc}  ({'mvf', 'mc'}, default 'mvf') ---- Markov chains
+                        generator.
+  --output_size OUTPUT_SIZE
+                        (int, default 50) ----- Number of lines to be sent to
+                        output.
+  --storage_path STORAGE_PATH
+                        (str, default './storage') ----- Path to txt file the
+                        output will be saved to. If --writer=='txt', set this
+                        argument (example: '~/Downloads/markov-
+                        chains/output.txt').
 ```
 
 ## Example

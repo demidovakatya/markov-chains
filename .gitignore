@@ -6,3 +6,6 @@ _core/*
 _generator/*
 storage
 *.sublime-workspace
+legacy
+legacy2
+logging.conf
