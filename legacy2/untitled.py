@@ -1,5 +1,6 @@
-import os, re
-import generator, core
+import core
+
+from legacy2 import generator
 
 text = core.read_txt_files()
 text = core.beautify(text)
