@@ -4,3 +4,5 @@
 *.txt
 _core/*
 _generator/*
+storage
+*.sublime-workspace
