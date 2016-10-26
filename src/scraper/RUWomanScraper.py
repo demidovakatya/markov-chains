@@ -24,13 +24,13 @@ class RUWomanScraper(AbstractScraper):
     def execute(self):
         thread_urls = self.__get_thread_urls(self.pagelimit, self.thread_limit)
 
-        for thread_url in self.__get_thread_urls(self.pagelimit):
+        for thread_url in self.__get_thread_urls(self.pagelimit, self.pagelimit):
             for text in self.__get_thread_posts(thread_url):
                 yield text
 
     def __get_thread_urls(self, pagelimit, thread_limit):
         
-        for forum_page_link in self.__get_pagination_links(self.FORUM_INDEX, pagelimit):
+        for forum_page_link in self.__get_pagination_links(self.FORUM, pagelimit):
             logging.info('Reading %s...' % forum_page_link)
 
             for thread_link in self.__get_thread_links(forum_page_link):
@@ -38,7 +38,7 @@ class RUWomanScraper(AbstractScraper):
                     yield thread_page_link
 
 
-    def __parse_posts(self, url):
+    def __get_thread_posts(self, url):
         
         soup = self.init_soup(self.get_page_content(url))
         
@@ -83,4 +83,4 @@ class RUWomanScraper(AbstractScraper):
         for link in soup.find(attrs={'class': 'all-topics'}):
             url = link.find('a')
             if url is not None and url != -1:
-                yield self.INDEX + url.get('')
+                yield self.INDEX + url.get('href')

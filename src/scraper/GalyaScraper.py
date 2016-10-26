@@ -36,7 +36,7 @@ class GalyaScraper(AbstractScraper):
             soup = self.init_soup(self.get_page_content(url, self.ENCODING))
             links = soup.findAll(attrs={'title': 'дата последнего комментария'})
             for link in links:
-                yield self.DOMAIN + '/clubs/' + re.sub('&.*', '', link.get('href'))
+                yield self.INDEX + '/clubs/' + re.sub('&.*', '', link.get('href'))
 
     def __get_thread_posts(self, url):
         
