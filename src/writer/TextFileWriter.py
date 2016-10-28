@@ -20,4 +20,4 @@ class TextFileWriter(AbstractOutputWriter):
             strftime("%Y-%m-%d_%H:%M", gmtime()) + '.txt'
 
         with open(file_name, 'a', encoding='utf8') as file:
-            file.write(str(self.counter) + ". -> " + str(m_text) + '\n')
+            file.write(str(m_text) + '\n')

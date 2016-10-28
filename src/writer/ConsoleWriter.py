@@ -6,4 +6,4 @@ class ConsoleWriter(AbstractOutputWriter):
 
     def write(self, m_text):
         self.counter += 1
-        print(str(self.counter) + ". -> " + str(m_text), '\n')
+        print(str(m_text), '\n')
