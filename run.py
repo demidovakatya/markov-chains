@@ -12,7 +12,7 @@ def main():
 def __parse_args():
     description = '''
                   Run markov-chains application.\n\nExample:\n\t
-                  run.py --scrapers 'b' --generator 'mvf' --output_size 10
+                  run.py --scrapers 'b' 'woman.ru' --generator 'mvf' --output_size 10
                   '''
     
     parser = argparse.ArgumentParser(description=description)
@@ -22,7 +22,7 @@ def __parse_args():
                         nargs='*',
                         choices=['b', 'galya.ru', 'krovostok', 'woman.ru'],
                         required=True,
-                        help="(str or array of str from {'b', 'galya.ru', 'krovostok', 'woman.ru'}) ---- Scrapers to use for getting data from the web.")
+                        help="(str or multiple str separated by space, from {'b', 'galya.ru', 'krovostok', 'woman.ru'}) ---- Scrapers to use for getting data from the web.")
     
     parser.add_argument('--mode', 
                         action='store', 
@@ -51,7 +51,7 @@ def __parse_args():
     parser.add_argument('--storage_path', 
                         action='store', 
                         default='./storage',
-                        help="(str, default './storage') ----- Path to txt file the output will be saved to. If --writer=='txt', set this argument (example: '~/Downloads/markov-chains/output.txt')." )
+                        help="(str, default './storage') ----- Path to folder the output of program will be saved to.")
 
     return vars(parser.parse_args())
 

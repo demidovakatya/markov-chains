@@ -5,13 +5,13 @@ usage: run.py [-h] --scrapers [SC [SC ...]] [--mode {all,parse,generate}]
               [--writer {console,txt}] [--generator {mvf,mc}]
               [--output_size OUTPUT_SIZE] [--storage_path STORAGE_PATH]
 
-Run markov-chains application. Example: run.py --scrapers 'b' --generator
+Run markov-chains application. Example: run.py --scrapers 'b' 'woman.ru' --generator
 'mvf' --output_size 10
 
 optional arguments:
   -h, --help            show this help message and exit
   --scrapers [SC [SC ...]]
-                        (str or array of str from {'b', 'galya.ru',
+                        (str or multiple str separated by space, from {'b', 'galya.ru',
                         'krovostok', 'woman.ru'}) ---- Scrapers to use for
                         getting data from the web.
   --mode {all,parse,generate}
@@ -30,10 +30,8 @@ optional arguments:
                         (int, default 50) ----- Number of lines to be sent to
                         output.
   --storage_path STORAGE_PATH
-                        (str, default './storage') ----- Path to txt file the
-                        output will be saved to. If --writer=='txt', set this
-                        argument (example: '~/Downloads/markov-
-                        chains/output.txt').
+                        (str, default './storage') ----- Path to folder the output
+                        of program will be saved to.
 ```
 
 ## Example
