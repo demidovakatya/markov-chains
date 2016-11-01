@@ -2,7 +2,6 @@ import collections
 
 from src.scraper.BScraper import BScraper
 from src.scraper.GalyaScraper import GalyaScraper
-from src.scraper.KrovostokScraper import KrovostokScraper
 from src.scraper.RUWomanScraper import RUWomanScraper
 
 
@@ -19,7 +18,6 @@ class Scrapers:
         scrapers_dict = {
             'b': BScraper(),
             'galya.ru': GalyaScraper(),
-            'krovostok': KrovostokScraper(),
             'woman.ru': RUWomanScraper()}
 
         return scrapers_dict.get(scraper, None)

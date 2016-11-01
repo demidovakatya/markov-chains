@@ -20,9 +20,9 @@ def __parse_args():
     parser.add_argument('--scrapers', 
                         metavar='SC', 
                         nargs='*',
-                        choices=['b', 'galya.ru', 'krovostok', 'woman.ru'],
+                        choices=['b', 'galya.ru', 'woman.ru'],
                         default=['b', 'galya.ru', 'woman.ru'],
-                        help="(str or multiple str separated by space, from {'b', 'galya.ru', 'krovostok', 'woman.ru'}) ---- Scrapers to use for getting data from the web.")
+                        help="(str or multiple str separated by space, from {'b', 'galya.ru', 'woman.ru'}) ---- Scrapers to use for getting data from the web.")
     
     parser.add_argument('--mode', 
                         action='store', 

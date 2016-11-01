@@ -11,8 +11,7 @@ Run markov-chains application. Example: run.py --scrapers 'b' 'woman.ru' --gener
 optional arguments:
   -h, --help            show this help message and exit
   --scrapers [SC [SC ...]]
-                        (str or multiple str separated by space, from {'b', 'galya.ru',
-                        'krovostok', 'woman.ru'}) ---- Scrapers to use for
+                        (str or multiple str separated by space, from {'b', 'galya.ru', 'woman.ru'}) ---- Scrapers to use for
                         getting data from the web.
   --mode {all,parse,generate}
                         ({'all', 'parse', 'generate'}, default 'all') ----
