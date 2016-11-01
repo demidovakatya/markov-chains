@@ -12,17 +12,17 @@ def main():
 def __parse_args():
     description = '''
                   Generate strings using the markov-chains application.\n\nExample:\n\t
-                  generate.py --generator 'mvf' --output_size 10 --scrapers 'b'
+                  generate.py --generator 'mvf' --output_size 10 --src 'b'
                   '''
 
     parser = argparse.ArgumentParser(description=description)
     
-    parser.add_argument('--scrapers', 
+    parser.add_argument('--src', 
                         metavar='SC', 
                         nargs='*',
                         choices=['b', 'galya.ru', 'woman.ru'],
                         default=['b', 'galya.ru', 'woman.ru'],
-                        help="(str or multiple str separated by space, from {'b', 'galya.ru', 'woman.ru'}) ---- Scrapers to use for getting data from the web.")
+                        help="(str or multiple str separated by space, from {'b', 'galya.ru', 'woman.ru'}) ---- Sources to use for getting data from the web.")
     
     parser.add_argument('--mode', 
                         action='store', 

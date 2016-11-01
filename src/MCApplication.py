@@ -8,7 +8,7 @@ class MCApplication:
 
     def __init__(self, config):
         self.storage   = BinaryFileStorage(config['storage_path'])
-        self.scrapers  = Scrapers().make(config['scrapers'])
+        self.scrapers  = Scrapers().make(config['src'])
         self.generator = Generators().make(config['generator'])
         self.writer    = Writers().make(config['writer'], config['storage_path'])
         self.mode      = config['mode']

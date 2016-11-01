@@ -12,17 +12,17 @@ def main():
 def __parse_args():
     description = '''
                   Run markov-chains application.\n\nExample:\n\t
-                  run.py --scrapers 'b' 'woman.ru' --generator 'mvf' --output_size 10
+                  run.py --src 'b' 'woman.ru' --generator 'mvf' --output_size 10
                   '''
     
     parser = argparse.ArgumentParser(description=description)
     
-    parser.add_argument('--scrapers', 
+    parser.add_argument('--src', 
                         metavar='SC', 
                         nargs='*',
                         choices=['b', 'galya.ru', 'woman.ru'],
-                        required=True,
-                        help="(str or multiple str separated by space, from {'b', 'galya.ru', 'woman.ru'}) ---- Scrapers to use for getting data from the web.")
+                        default=choices=['b', 'galya.ru', 'woman.ru'],
+                        help="(str or multiple str separated by space, from {'b', 'galya.ru', 'woman.ru'}) ---- Sources for getting data from the web.")
     
     parser.add_argument('--mode', 
                         action='store', 
