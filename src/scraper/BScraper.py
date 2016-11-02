@@ -21,8 +21,8 @@ class BScraper(AbstractScraper):
         return self.INDEX + '/' + self.board + '/' + str(page) + '.html'
 
     def __get_thread_urls(self, n_pages):
-        for page in range(1, n_pages + 1):
-            url = self.__make_thread_url(page)
+        for page in range(n_pages):
+            url = self.__make_thread_url(page + 1)
             logging.info('Reading %s...' % url)
 
             soup = self.init_soup(self.get_page_content(url))
