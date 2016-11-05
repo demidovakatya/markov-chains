@@ -21,7 +21,7 @@ def __parse_args():
                         metavar='SC', 
                         nargs='*',
                         choices=['b', 'galya.ru', 'woman.ru'],
-                        default=choices=['b', 'galya.ru', 'woman.ru'],
+                        default=['b', 'galya.ru', 'woman.ru'],
                         help="(str or multiple str separated by space, from {'b', 'galya.ru', 'woman.ru'}) ---- Sources for getting data from the web.")
     
     parser.add_argument('--mode', 

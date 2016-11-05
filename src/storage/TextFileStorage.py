@@ -19,15 +19,18 @@ class TextFileStorage(AbstractStorage):
         if not os.path.exists(self.base_dir):
             os.makedirs(self.base_dir)
 
-        with open(self.base_dir + '/' + source + '.txt', 'w', encoding='utf8') as file:
-            logging.info("Writing to file %s" % file)
+        file_name = os.path.join(self.base_dir, '{}.txt'.format(source))
+        
+        with open(file_name, 'w', encoding='utf8') as file:
+            logging.info("Writing to file {}".format(file))
+            
             for text in texts:
                 text = self.__serialize(text)
-                logging.debug("Writing: %s" % text)
+                logging.debug("Writing: {}".format(text))
                 file.write(text + '\n')
 
-        logging.info('Successfully saved %s posts to: %s/%s' %
-                     (len(texts), self.base_dir, source))
+        logging.info('Successfully saved {} posts to: {}/{}'.format(len(texts), 
+                                                        self.base_dir, source))
 
     def get(self, sources):
         texts = []
@@ -36,11 +39,13 @@ class TextFileStorage(AbstractStorage):
             sources = [sources]
 
         for source in sources:
-            file = self.base_dir + '/' + source + '.txt'
-            logging.info("Reading file: %s" % file)
+            file_name = os.path.join(self.base_dir, '{}.txt'.format(source))
+            logging.info("Reading file: {}".format(file_name))
+
             fragments = [self.__deserialize(f) for f in open(
-                file, encoding='utf8').read().split('\n')]
+                file_name, encoding='utf8').read().split('\n')]
             fragments = [f for f in fragments if f != '']
+            
             texts += fragments
 
         return texts

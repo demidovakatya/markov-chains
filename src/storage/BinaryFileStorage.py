@@ -15,12 +15,14 @@ class BinaryFileStorage(AbstractStorage):
         if not os.path.exists(self.base_dir):
             os.makedirs(self.base_dir)
 
-        with open(self.base_dir + '/' + source + '.bin', 'wb') as file:
-            logging.info("Writing to file: %s" % file)
+        file_name = os.path.join(self.base_dir, '{}.bin'.format(source))
+
+        with open(file_name, 'wb') as file:
+            logging.info("Writing to file: {}".format(file))
             pickle.dump(texts, file)
 
-        logging.info('Successfully saved %s posts to: %s/%s' %
-                     (len(texts), self.base_dir, source))
+        logging.info('Successfully saved {} posts to: {}/{}'.format(len(texts), 
+                                                        self.base_dir, source))
 
     def get(self, sources):
         texts = []
@@ -29,8 +31,10 @@ class BinaryFileStorage(AbstractStorage):
             sources = [sources]
 
         for source in sources:
-            with open(self.base_dir + '/' + source + '.bin', 'rb') as file:
-                logging.info("Reading file: %s" % file)
+            file_name = os.path.join(self.base_dir, '{}.bin'.format(source))
+            
+            with open(file_name, 'rb') as file:
+                logging.info("Reading file: {}".format(file))
                 texts += pickle.load(file)
 
         return texts
