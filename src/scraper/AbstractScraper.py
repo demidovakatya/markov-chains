@@ -17,8 +17,7 @@ class AbstractScraper(ABC):
     def execute(self):
         pass
 
-    def beautify(self, text):
-        
+    def beautify(self, text):        
         # remove urls
         regex_url = re.compile(r'https?://[^\s]*')
         text = regex_url.sub(' ', text)
@@ -34,6 +33,13 @@ class AbstractScraper(ABC):
 
         # replace ё with е
         text = re.sub('ё', 'е', text)
+
+        # remove extra periods (........ -> ...)
+        text = re.sub(r'(\.){3,}', '... ', text).strip()
+        
+        # add missing spaces (after ?/!)
+        # text = re.sub(r'\?\S', '? ', text).strip()
+        # text = re.sub(r'!\S', '! ', text).strip()
 
         # remove extra spaces
         text = re.sub(r'\s+', ' ', text).strip()
