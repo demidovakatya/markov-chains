@@ -1,7 +1,7 @@
 ## How to
 
 ```
-usage: run.py [-h] --scrapers [SC [SC ...]] [--mode {all,parse,generate}]
+usage: run.py [-h] --src [SC [SC ...]] [--mode {all,parse,generate}]
               [--writer {console,txt}] [--generator {mvf,mc}]
               [--output_size OUTPUT_SIZE] [--storage_path STORAGE_PATH]
 
@@ -10,7 +10,7 @@ Run markov-chains application. Example: run.py --scrapers 'b' 'woman.ru' --gener
 
 optional arguments:
   -h, --help            show this help message and exit
-  --scrapers [SC [SC ...]]
+  --src [SC [SC ...]]
                         (str or multiple str separated by space, from {'b', 'galya.ru', 'woman.ru'}) ---- Scrapers to use for
                         getting data from the web.
   --mode {all,parse,generate}
