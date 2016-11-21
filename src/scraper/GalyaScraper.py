@@ -43,6 +43,8 @@ class GalyaScraper(AbstractScraper):
         soup = self.init_soup(self.get_page_content(url, self.ENCODING))
 
         for hit in soup.findAll(attrs={'class': 'text'}):
+            for element in hit.findAll('noindex'):
+                element.extract()
             payload = self.beautify(hit.get_text(separator=' '))
             
             if payload != '':
