@@ -23,7 +23,12 @@ def __parse_args():
                         choices=['b', 'galya.ru', 'woman.ru'],
                         default=['b', 'galya.ru', 'woman.ru'],
                         help="(str or multiple str separated by space, from {'b', 'galya.ru', 'woman.ru'}) ---- Sources to use for getting data from the web.")
-    
+
+    parser.add_argument('--start_sentence',
+                        action='store',
+                        default=None,
+                        help="(str, default None) ----- Sentence to start with")
+
     parser.add_argument('--mode', 
                         action='store', 
                         default='generate',
