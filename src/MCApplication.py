@@ -9,6 +9,7 @@ class MCApplication:
     def __init__(self, config):
         self.storage   = BinaryFileStorage(config['storage_path'])
         self.scrapers  = Scrapers().make(config['src'])
+        self.start_sentence  = config['start_sentence']
         self.generator = Generators().make(config['generator'])
         self.writer    = Writers().make(config['writer'], config['storage_path'])
         self.mode      = config['mode']
@@ -34,5 +35,5 @@ class MCApplication:
 
         model = self.generator.init_model(texts)
         
-        for m_text in self.generator.generate(model, self.output_size):
+        for m_text in self.generator.generate(model, self.start_sentence, self.output_size):
             self.writer.write(m_text)

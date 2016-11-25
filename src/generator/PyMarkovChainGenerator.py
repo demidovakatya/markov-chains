@@ -12,6 +12,10 @@ class PyMarkovChainGenerator(AbstractGenerator):
 
         return model
 
-    def generate(self, model, n):
-        for _ in range(n):
-            yield MText(model.generateString())
+    def generate(self, model, start_sentence, n):
+        if start_sentence is None:
+            for _ in range(n):
+                yield MText(model.generateString())
+        else:
+            for _ in range(n):
+                yield MText(model.generateStringWithSeed(start_sentence))

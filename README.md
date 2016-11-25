@@ -13,6 +13,8 @@ optional arguments:
   --src [SC [SC ...]]
                         (str or multiple str separated by space, from {'b', 'galya.ru', 'woman.ru'}) ---- Scrapers to use for
                         getting data from the web.
+  --start_sentence START_SENTENCE 
+                        (str, default None) ----- Sentence to start with
   --mode {all,parse,generate}
                         ({'all', 'parse', 'generate'}, default 'all') ----
                         Mode in which the script should be run. If 'all'
