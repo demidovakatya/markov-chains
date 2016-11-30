@@ -5,7 +5,7 @@ usage: run.py [-h] --src [SC [SC ...]] [--mode {all,parse,generate}]
               [--writer {console,txt}] [--generator {mvf,mc}]
               [--output_size OUTPUT_SIZE] [--storage_path STORAGE_PATH]
 
-Run markov-chains application. Example: run.py --scrapers 'b' 'woman.ru' --generator
+Run markov-chains application. Example: run.py --scr 'b' 'woman.ru' --generator
 'mvf' --output_size 10
 
 optional arguments:
@@ -37,8 +37,7 @@ optional arguments:
 
 ## Example
 
-```python
-# In [1]: %run untitled.py
+```
 Но я кiт не еште меня!! Я ща прежде всего интересует перемещение клавишами hjkl по менюхам в проводнике, настройках и прочих шарлатанов.
 
 Не, не в России.
