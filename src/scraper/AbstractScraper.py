@@ -13,16 +13,18 @@ class AbstractScraper(ABC):
     def __init__(self, source):
         self.source = source
 
+
     @abstractmethod
     def execute(self):
         pass
 
-    def beautify(self, text):        
+
+    def beautify(self, text):
         # remove urls
         regex_url = re.compile(r'https?://[^\s]*')
         text = regex_url.sub(' ', text)
 
-        # remove specific shit     
+        # remove specific shit
         text = re.sub(r'>>[0-9]*|\(OP\)|\(YOU\)', ' ', text)
         text = re.sub(r'&gt;', ' ', text)
 
@@ -36,7 +38,7 @@ class AbstractScraper(ABC):
 
         # remove extra periods (........ -> ...)
         text = re.sub(r'(\.){3,}', '... ', text).strip()
-        
+
         # add missing spaces (after ?/!)
         # text = re.sub(r'\?\S', '? ', text).strip()
         # text = re.sub(r'!\S', '! ', text).strip()
@@ -46,8 +48,9 @@ class AbstractScraper(ABC):
 
         # lower
         text = text.lower()
-        
+
         return text
+
 
     def get_page_content(self, url, encoding='utf8'):
         try:
@@ -57,6 +60,7 @@ class AbstractScraper(ABC):
             html = e.partial
 
         return html
+
 
     def init_soup(self, html, lib='lxml'):
         return bs(html, lib)
